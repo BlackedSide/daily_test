@@ -23,8 +23,10 @@ public class CollectorTest {
         List<String> list = new ArrayList<>();
         list.add("1");
         list.add("2");
+        list.add("3");
+        list.add("4");
         for (String item : list) {
-            if (Objects.equals("1", item)) {
+            if (Objects.equals("3", item)) {
                 list.remove(item);
             }
         }

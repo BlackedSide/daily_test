@@ -12,6 +12,7 @@
     <modules>
         <module>utils_test</module>
         <module>pit_test</module>
+        <module>concurrent_test</module>
     </modules>
 
     <properties>
