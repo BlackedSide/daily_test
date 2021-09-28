@@ -3,7 +3,6 @@ package okhttp3;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,55 +16,55 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author jinpeng.fan
  */
 public class HttpClientTest {
-    private final AtomicInteger total = new AtomicInteger(0);
 
     private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .addInterceptor(chain -> {
-                Request request = chain.request();
-                Response response = chain.proceed(request);
-                int tryCount = 0;
-                while (!response.isSuccessful() && tryCount < 3) {
-                    total.getAndIncrement();
-                    tryCount++;
-                    response = chain.proceed(request);
-                }
-                return response;
-            })
+            .readTimeout(6L, TimeUnit.SECONDS)
+            .connectTimeout(6L, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
             .build();
 
     @Test
-    public void okhttp() throws Exception {
+    public void okhttp() {
         String api = "http://10.93.240.8:8080/healthcheck.html";
         String api2 = "http://10.0.0.0:8080";
-        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool-%d").build();
+        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool").build();
         ExecutorService pool = new ThreadPoolExecutor(
-                5,
+                100,
                 200,
                 0L,
                 TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(1024),
+                new LinkedBlockingQueue<>(1000),
                 threadFactory,
                 new ThreadPoolExecutor.AbortPolicy()
         );
+        AtomicInteger failed = new AtomicInteger(0);
+        long start = System.currentTimeMillis();
+        CountDownLatch countDownLatch = new CountDownLatch(1000);
         for (int i = 0; i < 1000; i++) {
-            Request request = new Request.Builder()
-                    .url(api2)
-                    .get()
-                    .build();
-            Call call = okHttpClient.newCall(request);
-            if (call.execute().isSuccessful()) {
-                System.out.println("ok");
-                ;
-            } else {
-                for (int j = 0; j < 3; j++) {
-                    if (call.execute().isSuccessful()) {
+            pool.execute(() -> {
+                Request request = new Request.Builder()
+                        .url(api)
+                        .get()
+                        .build();
+                Call call = okHttpClient.newCall(request);
+                try (Response response = call.execute()) {
+                    if (response.isSuccessful()) {
                         System.out.println("ok");
                     }
-                    Thread.sleep(2000);
+                } catch (Exception e) {
+                    failed.getAndIncrement();
+                    System.out.println("failed");
                 }
-                System.out.println("failed");
-            }
+                countDownLatch.countDown();
+            });
         }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(System.currentTimeMillis() - start);
+        System.out.println(failed.get());
     }
 
     @Test
@@ -78,8 +77,8 @@ public class HttpClientTest {
                 .build();
         Call call = okHttpClient.newCall(request);
         long start = System.currentTimeMillis();
-        try {
-            if (call.execute().isSuccessful()) {
+        try (Response response = call.execute()) {
+            if (response.isSuccessful()) {
                 System.out.println("ok");
             }
         } catch (Exception e) {
@@ -87,6 +86,5 @@ public class HttpClientTest {
             System.out.println("failed");
         }
         System.out.println(System.currentTimeMillis() - start);
-        System.out.println(total);
     }
 }
