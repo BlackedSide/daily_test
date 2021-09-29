@@ -1,8 +1,12 @@
 package okhttp3;
 
+import com.github.rholder.retry.Retryer;
+import com.github.rholder.retry.RetryerBuilder;
+import com.github.rholder.retry.StopStrategies;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.junit.Test;
 
+import java.util.Objects;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,10 +22,90 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class HttpClientTest {
 
     private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .readTimeout(6L, TimeUnit.SECONDS)
-            .connectTimeout(6L, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(true)
+            .connectTimeout(2L, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(false)
             .build();
+
+    private final Retryer<Boolean> retryer = RetryerBuilder.<Boolean>newBuilder()
+            .retryIfException()
+            .retryIfResult(aBoolean -> Objects.equals(aBoolean, false))
+            .withStopStrategy(StopStrategies.stopAfterAttempt(3))
+//            .withAttemptTimeLimiter(AttemptTimeLimiters.fixedTimeLimit(2L, TimeUnit.SECONDS))
+            .build();
+
+    @Test
+    public void retry() {
+        Callable<Boolean> callable = () -> {
+            Request request = new Request.Builder()
+                    .url("http://10.0.0.0:8080")
+//                    .url("https://www.baidu.com")
+                    .get()
+                    .build();
+            Call call = okHttpClient.newCall(request);
+            try (Response response = call.execute()) {
+                return response.isSuccessful();
+            } catch (Exception e) {
+                return false;
+            }
+        };
+        long start = System.currentTimeMillis();
+        try {
+            retryer.call(callable);
+            System.out.println("ok");
+        } catch (Exception e) {
+            System.out.println("failed");
+            e.printStackTrace();
+        }
+        System.out.println(System.currentTimeMillis() - start);
+    }
+
+    @Test
+    public void batchRetry() {
+        Callable<Boolean> callable = () -> {
+            Request request = new Request.Builder()
+                    .url("https://www.baidu.com")
+                    .get()
+                    .build();
+            Call call = okHttpClient.newCall(request);
+            try (Response response = call.execute()) {
+                return response.isSuccessful();
+            } catch (Exception e) {
+                return false;
+            }
+        };
+        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool").build();
+        ExecutorService pool = new ThreadPoolExecutor(
+                200,
+                500,
+                0L,
+                TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(1000),
+                threadFactory,
+                new ThreadPoolExecutor.AbortPolicy()
+        );
+        AtomicInteger failed = new AtomicInteger(0);
+        long start = System.currentTimeMillis();
+        CountDownLatch countDownLatch = new CountDownLatch(1000);
+        for (int i = 0; i < 1000; i++) {
+            pool.execute(() -> {
+                try {
+                    retryer.call(callable);
+                    System.out.println("ok");
+                } catch (Exception e) {
+                    System.out.println("failed");
+                    failed.getAndIncrement();
+                }
+                countDownLatch.countDown();
+            });
+        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(System.currentTimeMillis() - start);
+        System.out.println(failed.get());
+    }
 
     @Test
     public void okhttp() {
