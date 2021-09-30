@@ -1,3 +1,4 @@
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.util.*;
@@ -31,5 +32,13 @@ public class CollectorTest {
             }
         }
         System.out.println(list);
+    }
+
+    @Test
+    public void nullList() {
+        List<String> list = Lists.newArrayList();
+        for (String s : list) {
+            System.out.println(s);
+        }
     }
 }
