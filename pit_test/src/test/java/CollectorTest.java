@@ -38,7 +38,7 @@ public class CollectorTest {
     public void nullList() {
         List<String> list = Lists.newArrayList();
         for (String s : list) {
-            System.out.println(s);
+            System.out.printf("This is : %s", s);
         }
     }
 }
