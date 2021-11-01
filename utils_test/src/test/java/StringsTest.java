@@ -1,4 +1,5 @@
 import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 public class StringsTest {
@@ -12,5 +13,17 @@ public class StringsTest {
         System.out.println(sa);
         System.out.println(b);
         System.out.println(sb);
+    }
+
+    @Test
+    public void stringUtils() {
+        String a = "true";
+        System.out.println(StringUtils.equalsIgnoreCase(a, "false"));
+    }
+
+    @Test
+    public void string() {
+        String a = "true";
+        System.out.println(a.equalsIgnoreCase("false"));
     }
 }
