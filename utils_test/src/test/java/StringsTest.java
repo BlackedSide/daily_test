@@ -25,5 +25,6 @@ public class StringsTest {
     public void string() {
         String a = "true";
         System.out.println(a.equalsIgnoreCase("false"));
+        System.out.println(a.equalsIgnoreCase(null));
     }
 }
