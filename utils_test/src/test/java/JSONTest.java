@@ -18,5 +18,23 @@ public class JSONTest {
     public void jsonTest() {
         List<String> list = Lists.newArrayList("a", "b", "c");
         System.out.println(JSON.toJSON(list));
+        List<Person> list2 = Lists.newArrayList(new Person("zhao", 1), new Person("qian", 2));
+        System.out.println(JSON.toJSONString(list2));
+    }
+
+    @Test
+    public void arrayTest() {
+        String arr = "[1, 2, 3]";
+        System.out.println(JSON.parse(arr));
+    }
+
+    static class Person {
+        String name;
+        int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
     }
 }
