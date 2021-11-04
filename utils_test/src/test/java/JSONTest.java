@@ -1,7 +1,11 @@
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.junit.Test;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,12 +18,15 @@ import java.util.List;
  * @author funny
  */
 public class JSONTest {
+
     @Test
-    public void jsonTest() {
+    public void jsonTest() throws Exception {
         List<String> list = Lists.newArrayList("a", "b", "c");
         System.out.println(JSON.toJSON(list));
         List<Person> list2 = Lists.newArrayList(new Person("zhao", 1), new Person("qian", 2));
-        System.out.println(JSON.toJSONString(list2));
+        System.out.println(JSON.toJSON(list2));
+        Wrapper wrapper = new Wrapper(list2);
+        System.out.println(JSON.toJSONString(wrapper));
     }
 
     @Test
@@ -28,13 +35,18 @@ public class JSONTest {
         System.out.println(JSON.parse(arr));
     }
 
-    static class Person {
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class Person implements Serializable {
         String name;
         int age;
+    }
 
-        public Person(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class Wrapper implements Serializable {
+        List<Person> list;
     }
 }
