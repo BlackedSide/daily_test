@@ -14,6 +14,7 @@
         <module>pit_test</module>
         <module>concurrent_test</module>
         <module>akka_test</module>
+        <module>maven_test</module>
     </modules>
 
     <properties>
