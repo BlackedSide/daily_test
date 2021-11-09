@@ -23,9 +23,8 @@ public class GitTest {
         String path2 = "/Users/fanny/Qunar/Basic_Platform/spider";
         File file = new File(path);
         StoredConfig config = Git.open(file).getRepository().getConfig();
-        Repository repository = Git.open(file).getRepository();
-        System.out.println(repository.getDirectory().getParent());
-        System.out.println(config.getString("user", null, "user"));
+        System.out.println(config.getString("user", null, "name"));
+        System.out.println(config.getString("user", null, "email"));
     }
 
     @Test
