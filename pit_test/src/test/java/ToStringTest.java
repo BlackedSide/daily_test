@@ -21,6 +21,18 @@ import java.util.Set;
 public class ToStringTest {
 
     @Test
+    public void intParse() {
+        String s = "";
+        String list = "1,2,3,4,";
+        List<Integer> intList = Lists.newArrayList();
+//        System.out.println(Integer.parseInt(s));
+        for (String tip : list.split(",")) {
+            intList.add(Integer.parseInt(tip));
+        }
+        System.out.println(intList);
+    }
+
+    @Test
     public void setToString() {
         Set<String> set = Sets.newHashSet("hallo", "jinpeng");
         System.out.println(set);
