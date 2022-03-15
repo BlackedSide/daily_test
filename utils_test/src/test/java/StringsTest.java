@@ -22,6 +22,14 @@ public class StringsTest {
     }
 
     @Test
+    public void join() {
+        String uuid = "a2c3d4";
+        String test = null;
+        System.out.println(StringUtils.join("/", uuid));
+        System.out.println(StringUtils.join("/", test));
+    }
+
+    @Test
     public void string() {
         String a = "true";
         System.out.println(a.equalsIgnoreCase("false"));

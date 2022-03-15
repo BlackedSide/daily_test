@@ -13,7 +13,7 @@ public class EasyExcelMain {
         EasyExcel.read(input, ExcelData.class, new ReadListener<ExcelData>() {
             @Override
             public void invoke(ExcelData data, AnalysisContext analysisContext) {
-                if ("付翔".equals(data.getDirector())) {
+                if ("王玉峰".equals(data.getDirector())) {
                     handleMap(map, data);
                 }
             }
@@ -34,8 +34,8 @@ public class EasyExcelMain {
 //                            .appCode(appCode)
 //                            .build();
 //                    outputList.add(data);
-                    if ("龚珂".equals(owner.getKey()) && "P4".equals(other.getKey())) {
-                        System.out.println(appCode);
+                    if ("梁章坪".equals(owner.getKey()) && "P4".equals(other.getKey())) {
+                        System.out.println("\"" + appCode + "\",");
                     }
                 }
             }

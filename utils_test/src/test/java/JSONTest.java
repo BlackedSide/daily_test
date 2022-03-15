@@ -35,6 +35,12 @@ public class JSONTest {
         System.out.println(JSON.parse(arr));
     }
 
+    @Test
+    public void specialVal() {
+        Person p = new Person("{*!.ssA", 20);
+        System.out.println(JSON.toJSON(p));
+    }
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
