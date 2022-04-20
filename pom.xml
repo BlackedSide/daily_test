@@ -37,6 +37,7 @@
         <guava.retrying.version>2.0.0</guava.retrying.version>
         <fastjson.version>1.2.70</fastjson.version>
         <easyexcel.version>3.0.5</easyexcel.version>
+        <commons.beanutils.version>1.9.4</commons.beanutils.version>
     </properties>
 
     <dependencyManagement>
@@ -164,6 +165,12 @@
                 <artifactId>easyexcel</artifactId>
                 <version>${easyexcel.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons.beanutils.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -271,6 +278,11 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
         </dependency>
     </dependencies>
 
