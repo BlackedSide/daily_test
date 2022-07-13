@@ -38,6 +38,7 @@
         <fastjson.version>1.2.70</fastjson.version>
         <easyexcel.version>3.0.5</easyexcel.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
+        <mapstruct.version>1.5.1.Final</mapstruct.version>
     </properties>
 
     <dependencyManagement>
@@ -171,6 +172,18 @@
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons.beanutils.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -283,6 +296,16 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
         </dependency>
     </dependencies>
 
