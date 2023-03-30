@@ -68,13 +68,17 @@ public class JdkBuReleaseStatisticHandler extends BaseHandler {
 
     private String printDetail(BuJdkStatistic buJdkStatistic) {
         Set<String> all = Sets.newHashSet();
-        all.addAll(buJdkStatistic.getJdk11Apps());
-        all.addAll(buJdkStatistic.getJdk1_8Apps());
-        all.addAll(buJdkStatistic.getJdk1_7Apps());
-        all.addAll(buJdkStatistic.getJdk1_6Apps());
+//        all.addAll(buJdkStatistic.getJdk11Apps());
+//        all.addAll(buJdkStatistic.getJdk1_8Apps());
+//        all.addAll(buJdkStatistic.getJdk1_7Apps());
+//        all.addAll(buJdkStatistic.getJdk1_6Apps());
+        all.addAll(buJdkStatistic.getJdk17Apps());
         StringBuilder stringBuilder = new StringBuilder();
         for (String appcode : all) {
             stringBuilder.append(appcode).append(",");
+        }
+        if (stringBuilder.length() == 0) {
+            return "";
         }
         return stringBuilder.substring(0, stringBuilder.length() - 1);
     }
@@ -96,5 +100,11 @@ public class JdkBuReleaseStatisticHandler extends BaseHandler {
             case "1.6":
                 buJdkStatistic.getJdk1_6Apps().add(appcode);
         }
+    }
+
+    public static void main(String[] args) {
+        BaseHandler jdkBuReleaseStatisticHandler = new JdkBuReleaseStatisticHandler(ReleaseCountEnum.TOTAL, true, false, StatisticMonthEnum.HALF_YEAR);
+        jdkBuReleaseStatisticHandler.readFile();
+        jdkBuReleaseStatisticHandler.printResult();
     }
 }

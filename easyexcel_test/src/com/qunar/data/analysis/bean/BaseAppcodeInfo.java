@@ -24,6 +24,9 @@ public class BaseAppcodeInfo {
     @ExcelProperty("线上容器实例数")
     private Integer dockerCount;
 
+    @ExcelProperty("在线kvm数量")
+    private Integer kvmCount;
+
     @ExcelProperty("能否下线")
     private String canOffline;
 

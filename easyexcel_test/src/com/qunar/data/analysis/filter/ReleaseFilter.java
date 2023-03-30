@@ -1,10 +1,14 @@
 package com.qunar.data.analysis.filter;
 
+import com.google.common.collect.Lists;
 import com.qunar.data.analysis.bean.AppReleaseInfo;
 import com.qunar.data.analysis.bean.BaseAppcodeInfo;
 import com.qunar.data.analysis.bean.ReleaseCountEnum;
 import com.qunar.data.analysis.bean.StatisticMonthEnum;
 import com.qunar.data.analysis.storage.MatchStorage;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author jinpeng.fan
@@ -87,5 +91,19 @@ public class ReleaseFilter implements BaseFilter {
         }
         return releaseInfo.getJan23() + releaseInfo.getDec22() + releaseInfo.getNov22()
                 + releaseInfo.getOct22() + releaseInfo.getSep22() + releaseInfo.getAug22();
+    }
+
+
+    public static void main(String[] args) {
+        List<String> result = Lists.newArrayList();
+        Map<String, AppReleaseInfo> appReleaseMap = MatchStorage.appReleaseMap;
+        for (Map.Entry<String, AppReleaseInfo> appReleaseInfo : appReleaseMap.entrySet()) {
+            AppReleaseInfo releaseInfo = appReleaseInfo.getValue();
+            if (releaseInfo.getJan23() + releaseInfo.getDec22() + releaseInfo.getNov22()
+                    + releaseInfo.getOct22() + releaseInfo.getSep22() + releaseInfo.getAug22() > 0) {
+                result.add(releaseInfo.getAppcode());
+            }
+        }
+        System.out.println(result.toString().replaceAll(" ", ""));
     }
 }

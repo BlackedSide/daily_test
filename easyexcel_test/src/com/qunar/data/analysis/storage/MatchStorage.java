@@ -175,9 +175,16 @@ public class MatchStorage {
     }
 
     public static void main(String[] args) {
-        collectDubboServiceMatch();
-//        Set<String> test = Sets.newHashSet();
-//        System.out.println(test);
-        generateDubboMatchExcel();
+//        collectDubboServiceMatch();
+////        Set<String> test = Sets.newHashSet();
+////        System.out.println(test);
+//        generateDubboMatchExcel();
+        Set<String> result = Sets.newHashSet();
+        for (Map.Entry<String, String> entry : MatchStorage.appJdkMap.entrySet()) {
+            if ("17".equals(entry.getValue())) {
+                result.add(entry.getKey());
+            }
+        }
+        System.out.println(result.toString().substring(1, result.toString().length() - 1).replaceAll(" ", ""));
     }
 }
