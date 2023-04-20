@@ -52,11 +52,13 @@ public class BuHttpMeshStatistic {
                 owner, thirdBu, forthBu,
                 dockerJavaApps.size(),
                 dockerDomainJavaApps.size(),
-                p1p2DockerDomainJavaApps.size(),
+//                p1p2DockerDomainJavaApps.size(),
+                p1p2DockerDomainJavaApps,
                 p1p2DockerDomainJavaAppsOver10.size(),
                 p1p2DockerDomainJavaAppsOver5.size(),
                 p1p2DockerDomainJavaAppsBetween0to5.size(),
-                p1p2DockerDomainJavaAppsEqual0.size()
+//                p1p2DockerDomainJavaAppsEqual0.size()
+                p1p2DockerDomainJavaAppsEqual0
         );
     }
 }

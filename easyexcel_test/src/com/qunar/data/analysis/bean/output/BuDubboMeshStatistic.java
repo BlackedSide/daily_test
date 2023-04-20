@@ -45,10 +45,12 @@ public class BuDubboMeshStatistic {
         return String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
                 owner, thirdBu, forthBu,
                 canDubboMeshAppCodes.size(),
-                p1p2Apps.size(),
+//                p1p2Apps.size(),
+                p1p2Apps,
                 p1p2Over5Apps.size(),
                 p1p2Between0to5Apps.size(),
-                p1p2Equal0Apps.size()
+//                p1p2Equal0Apps.size()
+                p1p2Equal0Apps
         );
     }
 }

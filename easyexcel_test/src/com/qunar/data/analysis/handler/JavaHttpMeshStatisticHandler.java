@@ -40,8 +40,8 @@ public class JavaHttpMeshStatisticHandler extends BaseHandler {
 
     @Override
     public void handle(BaseAppcodeInfo baseAppcodeInfo) {
-//        BuHttpMeshStatistic buHttpMeshStatistic = httpMeshStatisticMap.get(baseAppcodeInfo.getOwner());
-        BuHttpMeshStatistic buHttpMeshStatistic = httpMeshStatisticMap.get(baseAppcodeInfo.getThirdBu());
+        BuHttpMeshStatistic buHttpMeshStatistic = httpMeshStatisticMap.get(baseAppcodeInfo.getOwner());
+//        BuHttpMeshStatistic buHttpMeshStatistic = httpMeshStatisticMap.get(baseAppcodeInfo.getThirdBu());
         if (buHttpMeshStatistic == null) {
             buHttpMeshStatistic = BuHttpMeshStatistic.builder()
                     .owner(baseAppcodeInfo.getOwner())
@@ -49,8 +49,8 @@ public class JavaHttpMeshStatisticHandler extends BaseHandler {
                     .forthBu(baseAppcodeInfo.getForthBu())
                     .build();
             setMap(buHttpMeshStatistic, baseAppcodeInfo);
-//            httpMeshStatisticMap.put(baseAppcodeInfo.getOwner(), buHttpMeshStatistic);
-            httpMeshStatisticMap.put(baseAppcodeInfo.getThirdBu(), buHttpMeshStatistic);
+            httpMeshStatisticMap.put(baseAppcodeInfo.getOwner(), buHttpMeshStatistic);
+//            httpMeshStatisticMap.put(baseAppcodeInfo.getThirdBu(), buHttpMeshStatistic);
         } else {
             setMap(buHttpMeshStatistic, baseAppcodeInfo);
         }
@@ -86,5 +86,11 @@ public class JavaHttpMeshStatisticHandler extends BaseHandler {
         if (p1p2Equal0Filter.match(baseAppcodeInfo)) {
             buHttpMeshStatistic.getP1p2DockerDomainJavaAppsEqual0().add(appcode);
         }
+    }
+
+    public static void main(String[] args) {
+        JavaHttpMeshStatisticHandler handler = new JavaHttpMeshStatisticHandler();
+        handler.readFile();
+        handler.printResult();
     }
 }
